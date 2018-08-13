@@ -53,7 +53,6 @@ public class JsoupTest {
     Document doc = Jsoup.connect(html2).userAgent(USER_AGENT).timeout(3000).get();
     System.out.println(doc.title());
     Elements elements = doc.select("img[src~=(?i)\\.(png|jpe?g)]");
-    //需要筛选后缀吗 Elements elements = doc.select("img[src]")
     for (Element element : elements) {
       String src = element.attr("src");
       if (StringUtils.isNoneBlank(src)) {
