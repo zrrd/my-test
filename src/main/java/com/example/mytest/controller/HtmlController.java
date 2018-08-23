@@ -1,11 +1,8 @@
 package com.example.mytest.controller;
 
-import com.example.mytest.jsoup.JsoupTest;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -45,7 +42,7 @@ public class HtmlController {
    */
   private static final Integer WIDTH = 300;
   private static final Integer HEIGHT = 300;
-  private static final String HTTP = "http:";
+  private static final String HTTP = "http";
 
 
   @GetMapping("/parserHtml")
@@ -56,7 +53,6 @@ public class HtmlController {
     try {
       url = URLDecoder.decode(url, "utf-8");
       Document doc = Jsoup.connect(url).userAgent(USER_AGENT).timeout(3000).get();
-      //获取标题
       String title = doc.title();
       data.put("title", title);
 
@@ -75,7 +71,7 @@ public class HtmlController {
         //获取图片
         data.put("img", getImg(doc, url));
       }
-      log.info("=====解析成功,标题[{}],摘要[{}],图片[{}]",
+      log.info("=====解析成功,标题[{}],摘要[{}],图片[{}]====",
           data.get("title"), data.get("description"), data.get("img"));
     } catch (Exception e) {
       throw new RuntimeException("链接解析失败");
@@ -100,8 +96,8 @@ public class HtmlController {
             description = StringUtils.substringBetween(description, "\"");
             if (StringUtils.isBlank(description)) {
               description = data.get("title");
-              data.put("description", description);
             }
+            data.put("description", description);
           }
 
           //查找封面图片
@@ -139,7 +135,7 @@ public class HtmlController {
       if (StringUtils.isNoneBlank(img)) {
         //有的url缺少http前缀
         if (!img.contains(HTTP)) {
-          img = HTTP + img;
+          img = HTTP + ":" + img;
         }
         if (meetTheSize(img)) {
           return img;
@@ -155,7 +151,7 @@ public class HtmlController {
       //以'//'开头的返回绝对路径
       if (relativePath.startsWith("//")) {
         img = "https:" + relativePath;
-      } else if (relativePath.startsWith("http")) {
+      } else if (relativePath.startsWith(HTTP)) {
         img = relativePath;
       } else {
         //以'/'开头的或者不以'/'开头的返回相对路径
@@ -188,7 +184,7 @@ public class HtmlController {
       if (w > WIDTH && h > HEIGHT) {
         return true;
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
       log.info("获取图片失败");
     }
     return false;
