@@ -24,8 +24,8 @@ public class JsoupTest {
   private static final String DEFAULT_IMAGE = "http://pic1.win4000.com/wallpaper/3/59783bb506c6e.jpg";
   private static final String USER_AGENT = "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16";
 
-  private static boolean getImgSize(String src, Integer width, Integer height) {
-    BufferedImage sourceImg = null;
+  private static boolean getImgSize(String src) {
+    BufferedImage sourceImg;
     try {
       URL url = new URL(src);
       // 根据url获取BufferImage对象
@@ -33,7 +33,7 @@ public class JsoupTest {
       // 获取图片的宽度和高度
       Integer w = sourceImg.getWidth();
       Integer h = sourceImg.getHeight();
-      if (w > width && h > height) {
+      if (w > JsoupTest.WIDTH && h > JsoupTest.HEIGHT) {
         return true;
       }
     } catch (IOException e) {
@@ -60,7 +60,7 @@ public class JsoupTest {
         if (!src.contains(HTTP)) {
           src = HTTP + src;
         }
-        if (getImgSize(src, WIDTH, HEIGHT)) {
+        if (getImgSize(src)) {
           System.out.println("符合 " + src);
           return;
         }
