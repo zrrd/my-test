@@ -1,14 +1,18 @@
-package com.example.mytest;
+package com.example;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@MapperScan("com.example.mytest.mapper")
+/**
+ * .
+ * @author shaoyijiong
+ */
 @SpringBootApplication
-public class MyTestApplication {
+@MapperScan(value = "com.example.mapper")
+public class DataProduceApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(MyTestApplication.class, args);
+    SpringApplication.run(DataProduceApplication.class, args);
   }
 }
